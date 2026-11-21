@@ -1,4 +1,12 @@
+-- =========================================================
+-- Research Management System - Task 4: Analytical queries
+-- Contains 21 standalone SELECT statements. Run after Task 3 (sample data).
+-- Each query is numbered; queries 17 and 18 solve the same problem
+-- with two different SQL techniques for comparison.
+-- =========================================================
 
+
+-- 1. Students by program and department
 SELECT s.student_id,
        CONCAT(s.first_name,' ',s.last_name) AS student_name,
        p.program_name,
@@ -11,6 +19,7 @@ ORDER BY d.department_name, p.program_name, s.last_name;
 
 
 
+-- 2. Students and their supervisors (including unassigned)
 SELECT s.student_id,
        CONCAT(s.first_name,' ',s.last_name) AS student_name,
        CONCAT(f.first_name,' ',f.last_name) AS supervisor_name,
@@ -22,6 +31,7 @@ ORDER BY supervisor_name, student_name;
 
 
 
+-- 3. Faculty supervising more than 5 students
 SELECT f.faculty_id,
        CONCAT(f.first_name,' ',f.last_name) AS faculty_name,
        COUNT(s.student_id) AS num_students
@@ -33,6 +43,7 @@ ORDER BY num_students DESC;
 
 
 
+-- 4. Research projects with more than 3 students
 SELECT rp.project_id,
        rp.project_title,
        COUNT(sp.student_id) AS num_students
@@ -44,6 +55,7 @@ ORDER BY num_students DESC;
 
 
 
+-- 5. Projects funded above 500,000
 SELECT rp.project_id,
        rp.project_title,
        SUM(f.funding_amount) AS total_funding
@@ -55,6 +67,7 @@ ORDER BY total_funding DESC;
 
 
 
+-- 6. Students on more than one project
 SELECT s.student_id,
        CONCAT(s.first_name,' ',s.last_name) AS student_name,
        COUNT(sp.project_id) AS num_projects
@@ -66,6 +79,7 @@ ORDER BY num_projects DESC;
 
 
 
+-- 7. Faculty with at least one publication
 SELECT DISTINCT f.faculty_id,
        CONCAT(f.first_name,' ',f.last_name) AS faculty_name
 FROM Faculty f
@@ -74,6 +88,7 @@ ORDER BY faculty_name;
 
 
 
+-- 8. Publications with more than 3 authors
 SELECT p.publication_id,
        p.title,
        COUNT(pa.faculty_id) AS num_authors
@@ -85,6 +100,7 @@ ORDER BY num_authors DESC;
 
 
 
+-- 9. Corresponding-author publications for a faculty member (example: faculty_id = 1)
 -- Example: faculty_id = 1
 SELECT p.publication_id,
        p.title,
@@ -99,6 +115,7 @@ ORDER BY p.publication_year DESC;
 
 
 
+-- 10. Conferences with more than 5 submissions
 SELECT c.conference_id,
        c.conference_name,
        COUNT(s.submission_id) AS num_submissions
@@ -110,6 +127,7 @@ ORDER BY num_submissions DESC;
 
 
 
+-- 11. Accepted submissions (example: decision = 'Accepted')
 -- Example: decision = 'Accepted'
 SELECT s.submission_id,
        p.title,
@@ -124,6 +142,7 @@ ORDER BY s.decision_date DESC;
 
 
 
+-- 12. Students with no project participation
 SELECT s.student_id,
        CONCAT(s.first_name,' ',s.last_name) AS student_name,
        p.program_name
@@ -138,6 +157,7 @@ ORDER BY s.student_id;
 
 
 
+-- 13. Faculty supervising no students
 SELECT f.faculty_id,
        CONCAT(f.first_name,' ',f.last_name) AS faculty_name,
        f.title
@@ -151,6 +171,7 @@ ORDER BY f.faculty_id;
 
 
 
+-- 14. Projects using a specific piece of equipment (example: equipment_id = 1)
 -- Example: equipment_id = 1 (GPU Server)
 SELECT DISTINCT rp.project_id,
        rp.project_title,
@@ -163,6 +184,7 @@ ORDER BY rp.project_id;
 
 
 
+-- 15. Mentors and their mentees
 SELECT DISTINCT
        m.faculty_id   AS mentor_id,
        CONCAT(m.first_name,' ',m.last_name) AS mentor_name,
@@ -173,6 +195,7 @@ ORDER BY mentor_name, mentee_name;
 
 
 
+-- 16. Faculty with no mentor
 SELECT f.faculty_id,
        CONCAT(f.first_name,' ',f.last_name) AS faculty_name,
        f.title
@@ -182,6 +205,7 @@ ORDER BY f.faculty_id;
 
 
 
+-- 17. Highest-funded project - Method A: correlated subquery
 -- Method A: correlated subquery
 SELECT rp.project_id,
        rp.project_title,
@@ -198,6 +222,7 @@ WHERE (SELECT SUM(f.funding_amount)
                  GROUP BY project_id) AS totals
        );
 
+-- 18. Highest-funded project - Method B: ORDER BY + LIMIT
 -- Method B: ORDER BY + LIMIT (simpler, MySQL)
 SELECT rp.project_id,
        rp.project_title,
@@ -210,6 +235,7 @@ LIMIT 1;
 
 
 
+-- 19. Faculty authors with the most publications
 SELECT f.faculty_id,
        CONCAT(f.first_name,' ',f.last_name) AS author_name,
        COUNT(pa.publication_id) AS num_publications
@@ -226,6 +252,7 @@ ORDER BY author_name;
 
 
 
+-- 20. Department(s) with the most research projects
 SELECT d.department_id,
        d.department_name,
        COUNT(rp.project_id) AS num_projects
@@ -241,6 +268,7 @@ HAVING COUNT(rp.project_id) = (
 
 
 
+-- 21. Projects ranked by average student contribution
 SELECT rp.project_id,
        rp.project_title,
        COUNT(sp.student_id) AS num_students,
@@ -249,4 +277,3 @@ FROM ResearchProject rp
 JOIN StudentProject sp ON rp.project_id = sp.project_id
 GROUP BY rp.project_id, rp.project_title
 ORDER BY avg_contribution DESC;
-
