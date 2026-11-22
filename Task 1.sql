@@ -1,40 +1,4 @@
--- =========================================================
--- Research Management System - DDL (MySQL 8.0.16+)
--- Fixes applied:
---   1. DATE DEFAULT (CURRENT_DATE)
---   2. CHECK constraints at table level (named)
---   3. Self-mentor rule -> triggers (error 3823)
---   4. Reviewer-present rule -> triggers (error 3823)
---   5. BIGINT AUTO_INCREMENT instead of BIGSERIAL
---   6. ENGINE=InnoDB everywhere
---   7. Circular FK Department<->Faculty via ALTER TABLE
--- =========================================================
-SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS AuditLog;
-DROP TABLE IF EXISTS EquipmentUsage;
-DROP TABLE IF EXISTS Equipment;
-DROP TABLE IF EXISTS Revision;
-DROP TABLE IF EXISTS Review;
-DROP TABLE IF EXISTS Submission;
-DROP TABLE IF EXISTS Conference;
-DROP TABLE IF EXISTS PublicationAuthor;
-DROP TABLE IF EXISTS Publication;
-DROP TABLE IF EXISTS Funding;
-DROP TABLE IF EXISTS FundingSource;
-DROP TABLE IF EXISTS StudentProject;
-DROP TABLE IF EXISTS FacultyProject;
-DROP TABLE IF EXISTS ResearchProject;
-DROP TABLE IF EXISTS Student;
-DROP TABLE IF EXISTS Faculty;
-DROP TABLE IF EXISTS Program;
-DROP TABLE IF EXISTS Department;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
--- =========================================================
--- DEPARTMENT
--- =========================================================
 CREATE TABLE Department (
     department_id     INT            PRIMARY KEY,
     department_name   VARCHAR(100)   NOT NULL UNIQUE,
@@ -43,9 +7,6 @@ CREATE TABLE Department (
     head_faculty_id   INT            NULL
 ) ENGINE=InnoDB;
 
--- =========================================================
--- PROGRAM
--- =========================================================
 CREATE TABLE Program (
     program_id        INT            PRIMARY KEY,
     program_name      VARCHAR(100)   NOT NULL,
@@ -58,9 +19,6 @@ CREATE TABLE Program (
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- FACULTY (recursive mentoring)
--- =========================================================
 CREATE TABLE Faculty (
     faculty_id        INT            PRIMARY KEY,
     first_name        VARCHAR(50)    NOT NULL,
@@ -116,9 +74,7 @@ END$$
 
 DELIMITER ;
 
--- =========================================================
--- STUDENT
--- =========================================================
+
 CREATE TABLE Student (
     student_id        INT            PRIMARY KEY,
     first_name        VARCHAR(50)    NOT NULL,
@@ -142,9 +98,7 @@ CREATE TABLE Student (
         ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- RESEARCH PROJECT
--- =========================================================
+
 CREATE TABLE ResearchProject (
     project_id        INT            PRIMARY KEY,
     project_title     VARCHAR(200)   NOT NULL,
@@ -165,9 +119,7 @@ CREATE TABLE ResearchProject (
         ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- FACULTY–PROJECT SUPERVISION (M:N)
--- =========================================================
+
 CREATE TABLE FacultyProject (
     faculty_id        INT            NOT NULL,
     project_id        INT            NOT NULL,
@@ -185,9 +137,7 @@ CREATE TABLE FacultyProject (
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- STUDENT–PROJECT PARTICIPATION (M:N)
--- =========================================================
+
 CREATE TABLE StudentProject (
     student_id               INT            NOT NULL,
     project_id               INT            NOT NULL,
@@ -207,9 +157,7 @@ CREATE TABLE StudentProject (
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- FUNDING SOURCE & FUNDING
--- =========================================================
+
 CREATE TABLE FundingSource (
     source_id         INT            PRIMARY KEY,
     source_name       VARCHAR(150)   NOT NULL UNIQUE,
@@ -237,9 +185,6 @@ CREATE TABLE Funding (
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- PUBLICATION / CONFERENCE / SUBMISSION
--- =========================================================
 CREATE TABLE Publication (
     publication_id    INT            PRIMARY KEY,
     title             VARCHAR(300)   NOT NULL,
@@ -297,9 +242,6 @@ CREATE TABLE Submission (
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- REVIEW (reviewer-present rule enforced by triggers)
--- =========================================================
 CREATE TABLE Review (
     review_id           INT            PRIMARY KEY,
     submission_id       INT            NOT NULL,
@@ -341,9 +283,6 @@ END$$
 
 DELIMITER ;
 
--- =========================================================
--- REVISION
--- =========================================================
 CREATE TABLE Revision (
     revision_id       INT            PRIMARY KEY,
     submission_id     INT            NOT NULL,
@@ -357,9 +296,6 @@ CREATE TABLE Revision (
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- EQUIPMENT & USAGE
--- =========================================================
 CREATE TABLE Equipment (
     equipment_id      INT            PRIMARY KEY,
     equipment_name    VARCHAR(150)   NOT NULL,
@@ -388,9 +324,6 @@ CREATE TABLE EquipmentUsage (
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
--- =========================================================
--- AUDIT LOG
--- =========================================================
 CREATE TABLE AuditLog (
     audit_id          BIGINT         NOT NULL AUTO_INCREMENT,
     db_user           VARCHAR(100)   NOT NULL DEFAULT (CURRENT_USER()),
@@ -405,5 +338,4 @@ CREATE TABLE AuditLog (
         CHECK (operation IN ('INSERT','UPDATE','DELETE'))
 ) ENGINE=InnoDB;
 
--- =========================================================
 SELECT 'Schema created successfully' AS status;
