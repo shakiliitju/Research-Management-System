@@ -1,120 +1,82 @@
--- =========================================================
--- Research Management System - Sample Data
--- Run AFTER the DDL script from Task 1
--- =========================================================
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE AuditLog;
-TRUNCATE TABLE EquipmentUsage;
-TRUNCATE TABLE Equipment;
-TRUNCATE TABLE Revision;
-TRUNCATE TABLE Review;
-TRUNCATE TABLE Submission;
-TRUNCATE TABLE Conference;
-TRUNCATE TABLE PublicationAuthor;
-TRUNCATE TABLE Publication;
-TRUNCATE TABLE Funding;
-TRUNCATE TABLE FundingSource;
-TRUNCATE TABLE StudentProject;
-TRUNCATE TABLE FacultyProject;
-TRUNCATE TABLE ResearchProject;
-TRUNCATE TABLE Student;
-TRUNCATE TABLE Faculty;
-TRUNCATE TABLE Program;
-TRUNCATE TABLE Department;
-SET FOREIGN_KEY_CHECKS = 1;
 
--- =========================================================
--- 1. DEPARTMENTS (5)
--- head_faculty_id set later after Faculty insert
--- =========================================================
 INSERT INTO Department (department_id, department_name, building, phone) VALUES
-(1, 'Computer Science',        'Building A', '011-2001'),
-(2, 'Electrical Engineering',  'Building B', '011-2002'),
-(3, 'Mechanical Engineering',  'Building C', '011-2003'),
-(4, 'Mathematics',             'Building D', '011-2004'),
-(5, 'Physics',                 'Building E', '011-2005');
+(1, 'Information Technology', 'Building A', '20395'),
+(2, 'Computer Engineering',  'Building B', '20396'),
+(3, 'Computer Science',  'Building C', '20394'),
+(4, 'Cybersecurity',  'Building D', '20927'),
+(5, 'Mechanical Engineering',  'Building E', '20456');
 
--- =========================================================
--- 2. PROGRAMS (8)
--- =========================================================
 INSERT INTO Program (program_id, program_name, degree_level, department_id) VALUES
-(1, 'BSc Computer Science',        'Bachelor', 1),
-(2, 'MSc Computer Science',        'Master',   1),
-(3, 'PhD Computer Science',        'PhD',      1),
-(4, 'BSc Electrical Engineering',  'Bachelor', 2),
-(5, 'MSc Electrical Engineering',  'Master',   2),
-(6, 'BSc Mechanical Engineering',  'Bachelor', 3),
-(7, 'MSc Mathematics',             'Master',   4),
-(8, 'PhD Physics',                 'PhD',      5);
+(1, 'BSc Information Technology',        'Bachelor', 1),
+(2, 'MSc Information Technology',        'Master',   1),
+(3, 'PhD Information Technology',        'PhD',      1),
+(4, 'BSc Computer Engineering',        'Bachelor', 2),
+(5, 'MSc Computer Engineering',        'Master',   2),
+(6, 'BSc Computer Science',        'Bachelor', 3),
+(7, 'MSc Computer Science',        'Master',   3),
+(8, 'PhD Computer Science',        'PhD',      3),
+(9, 'MSc Cybersecurity',  'Master', 4),
+(10, 'MSc Mechanical Engineering',  'Master', 5);
 
--- =========================================================
--- 3. FACULTY (15)
--- mentor_id references earlier faculty rows (recursive)
--- =========================================================
 INSERT INTO Faculty
 (faculty_id, first_name, last_name, email, phone, hire_date, title, salary, department_id, mentor_id) VALUES
-(1,  'Ahmed',   'Al-Farsi',    'ahmed.alfarsi@uni.edu',    '050-1001', '2010-09-01', 'Professor',           22000.00, 1, NULL),
-(2,  'Sara',    'Hassan',      'sara.hassan@uni.edu',      '050-1002', '2013-01-15', 'Associate Professor', 18000.00, 1, 1),
-(3,  'Omar',    'Khalid',      'omar.khalid@uni.edu',      '050-1003', '2015-08-20', 'Assistant Professor', 14000.00, 1, 2),
-(4,  'Lina',    'Nasser',      'lina.nasser@uni.edu',      '050-1004', '2016-03-10', 'Assistant Professor', 14000.00, 1, 1),
-(5,  'Yousef',  'Saleh',       'yousef.saleh@uni.edu',     '050-1005', '2012-05-01', 'Professor',           21000.00, 2, NULL),
-(6,  'Mona',    'Rahman',      'mona.rahman@uni.edu',      '050-1006', '2017-09-01', 'Lecturer',            11000.00, 2, 5),
-(7,  'Khaled',  'Othman',      'khaled.othman@uni.edu',    '050-1007', '2014-11-11', 'Associate Professor', 17500.00, 3, NULL),
-(8,  'Huda',    'Mansour',     'huda.mansour@uni.edu',     '050-1008', '2018-02-01', 'Assistant Professor', 13500.00, 3, 7),
-(9,  'Faisal',  'Ali',         'faisal.ali@uni.edu',       '050-1009', '2011-07-07', 'Professor',           23000.00, 4, NULL),
-(10, 'Noura',   'Ibrahim',     'noura.ibrahim@uni.edu',    '050-1010', '2019-10-01', 'Lecturer',            10500.00, 4, 9),
-(11, 'Tariq',   'Mahmoud',     'tariq.mahmoud@uni.edu',    '050-1011', '2016-06-15', 'Assistant Professor', 13800.00, 5, NULL),
-(12, 'Reem',    'Yahya',       'reem.yahya@uni.edu',       '050-1012', '2020-01-10', 'Lecturer',            10800.00, 5, 11),
-(13, 'Sami',    'Zaid',        'sami.zaid@uni.edu',        '050-1013', '2013-04-04', 'Associate Professor', 17200.00, 1, 1),
-(14, 'Dina',    'Bakr',        'dina.bakr@uni.edu',        '050-1014', '2017-12-12', 'Assistant Professor', 14200.00, 2, 5),
-(15, 'Hassan',  'Farouk',      'hassan.farouk@uni.edu',    '050-1015', '2019-03-03', 'Lecturer',            10900.00, 3, 7);
+(1,  'Ahmed',   'Al-Farsi',    'alfarsi@qu.edu.sa',    '050-1001', '2010-09-01', 'Professor',           22000.00, 1, NULL),
+(2,  'Sara',    'Hassan',      'hassan@qu.edu.sa',      '050-1002', '2013-01-15', 'Associate Professor', 18000.00, 1, 1),
+(3,  'Omar',    'Khalid',      'khalid@uqu.edu.sa',      '050-1003', '2015-08-20', 'Assistant Professor', 14000.00, 1, 2),
+(4,  'Lina',    'Nasser',      'lina@qu.edu.sa',      '050-1004', '2016-03-10', 'Assistant Professor', 14000.00, 1, 1),
+(5,  'Yousef',  'Saleh',       'yousef@qu.edu.sa',     '050-1005', '2012-05-01', 'Professor',           21000.00, 2, NULL),
+(6,  'Mona',    'Rahman',      'mona@qu.edu.sa',      '050-1006', '2017-09-01', 'Lecturer',            11000.00, 2, 5),
+(7,  'Khaled',  'Othman',      'khaled@qu.edu.sa',    '050-1007', '2014-11-11', 'Associate Professor', 17500.00, 3, NULL),
+(8,  'Huda',    'Mansour',     'mansour@qu.edu.sa',     '050-1008', '2018-02-01', 'Assistant Professor', 13500.00, 3, 7),
+(9,  'Faisal',  'Ali',         'faisal@qu.edu.sa',       '050-1009', '2011-07-07', 'Professor',           23000.00, 4, NULL),
+(10, 'Noura',   'Ibrahim',     'noura@qu.edu.sa',    '050-1010', '2019-10-01', 'Lecturer',            10500.00, 4, 9),
+(11, 'Tariq',   'Mahmoud',     'mahmoud@qu.edu.sa',    '050-1011', '2016-06-15', 'Assistant Professor', 13800.00, 5, NULL),
+(12, 'Reem',    'Yahya',       'yahya@qu.edu.sa',       '050-1012', '2020-01-10', 'Lecturer',            10800.00, 5, 11),
+(13, 'Sami',    'Zaid',        'zaid@qu.edu.sa',        '050-1013', '2013-04-04', 'Associate Professor', 17200.00, 1, 1),
+(14, 'Dina',    'Bakr',        'dina@qu.edu.sa',        '050-1014', '2017-12-12', 'Assistant Professor', 14200.00, 2, 5),
+(15, 'Hassan',  'Farouk',      'farouk@qu.edu.sa',    '050-1015', '2019-03-03', 'Lecturer',            10900.00, 3, 7);
 
--- Assign department heads
 UPDATE Department SET head_faculty_id = 1 WHERE department_id = 1;
 UPDATE Department SET head_faculty_id = 5 WHERE department_id = 2;
 UPDATE Department SET head_faculty_id = 7 WHERE department_id = 3;
 UPDATE Department SET head_faculty_id = 9 WHERE department_id = 4;
 UPDATE Department SET head_faculty_id = 11 WHERE department_id = 5;
 
--- =========================================================
--- 4. STUDENTS (30)
--- =========================================================
+
 INSERT INTO Student
 (student_id, first_name, last_name, email, phone, date_of_birth, enrollment_date, academic_status, program_id, supervisor_id) VALUES
-(1,  'Ali',     'Ahmad',      'ali.ahmad@student.edu',     '055-2001', '2000-02-11', '2019-09-01', 'Active',    1, 1),
-(2,  'Fatima',  'Saleh',      'fatima.saleh@student.edu',  '055-2002', '2001-03-22', '2020-09-01', 'Active',    1, 2),
-(3,  'Mohammed','Hussain',    'mohammed.h@student.edu',    '055-2003', '1999-07-15', '2018-09-01', 'Graduated', 1, 1),
-(4,  'Aisha',   'Omar',       'aisha.omar@student.edu',    '055-2004', '2002-01-09', '2021-09-01', 'Active',    1, 3),
-(5,  'Saud',    'Nasser',     'saud.nasser@student.edu',   '055-2005', '2000-11-30', '2019-09-01', 'Active',    2, 2),
-(6,  'Maryam',  'Khalid',     'maryam.khalid@student.edu', '055-2006', '1998-05-19', '2018-09-01', 'Active',    2, 1),
-(7,  'Abdullah','Rahman',     'abdullah.r@student.edu',    '055-2007', '1997-08-25', '2017-09-01', 'Active',    3, 1),
-(8,  'Layla',   'Faisal',     'layla.faisal@student.edu',  '055-2008', '2001-12-14', '2020-09-01', 'Active',    3, 13),
-(9,  'Nawaf',   'Sultan',     'nawaf.sultan@student.edu',  '055-2009', '2000-04-08', '2019-09-01', 'Suspended', 1, 4),
-(10, 'Hind',    'Majed',      'hind.majed@student.edu',    '055-2010', '2002-06-17', '2021-09-01', 'Active',    1, 2),
-(11, 'Sultan',  'Turki',      'sultan.turki@student.edu',  '055-2011', '1999-09-09', '2018-09-01', 'Graduated', 4, 5),
-(12, 'Amal',    'Saad',       'amal.saad@student.edu',     '055-2012', '2001-10-21', '2020-09-01', 'Active',    4, 6),
-(13, 'Fahad',   'Nayef',      'fahad.nayef@student.edu',   '055-2013', '2000-03-03', '2019-09-01', 'Active',    4, 5),
-(14, 'Razan',   'Waleed',     'razan.waleed@student.edu',  '055-2014', '2002-08-12', '2021-09-01', 'Active',    5, 14),
-(15, 'Bader',   'Hamad',      'bader.hamad@student.edu',   '055-2015', '1998-12-01', '2017-09-01', 'Active',    5, 5),
-(16, 'Jawaher', 'Salem',      'jawaher.salem@student.edu', '055-2016', '2001-05-27', '2020-09-01', 'Active',    6, 7),
-(17, 'Mansour', 'Ibrahim',    'mansour.i@student.edu',     '055-2017', '2000-07-04', '2019-09-01', 'Active',    6, 8),
-(18, 'Ghada',   'Yousef',     'ghada.yousef@student.edu',  '055-2018', '2002-11-16', '2021-09-01', 'Active',    6, 7),
-(19, 'Rakan',   'Fahad',      'rakan.fahad@student.edu',   '055-2019', '1999-01-23', '2018-09-01', 'Withdrawn', 6, 15),
-(20, 'Shahad',  'Nawaf',      'shahad.nawaf@student.edu',  '055-2020', '2001-09-05', '2020-09-01', 'Active',    7, 9),
-(21, 'Talal',   'Hamza',      'talal.hamza@student.edu',   '055-2021', '2000-06-30', '2019-09-01', 'Active',    7, 10),
-(22, 'Wafa',    'Adel',       'wafa.adel@student.edu',     '055-2022', '1998-02-18', '2018-09-01', 'Active',    7, 9),
-(23, 'Ziyad',   'Mazen',      'ziyad.mazen@student.edu',   '055-2023', '2001-04-11', '2020-09-01', 'Active',    8, 11),
-(24, 'Asma',    'Rashed',     'asma.rashed@student.edu',   '055-2024', '1997-10-07', '2017-09-01', 'Active',    8, 12),
-(25, 'Saeed',   'Nabil',      'saeed.nabil@student.edu',   '055-2025', '2000-12-25', '2019-09-01', 'Active',    8, 11),
-(26, 'Lama',    'Fouad',      'lama.fouad@student.edu',    '055-2026', '2002-03-14', '2021-09-01', 'Active',    1, 4),
-(27, 'Yara',    'Tariq',      'yara.tariq@student.edu',    '055-2027', '2001-08-08', '2020-09-01', 'Active',    2, 3),
-(28, 'Othman',  'Jamil',      'othman.jamil@student.edu',  '055-2028', '1999-11-19', '2018-09-01', 'Active',    3, 13),
-(29, 'Dalal',   'Khaled',     'dalal.khaled@student.edu',  '055-2029', '2002-01-02', '2021-09-01', 'Active',    4, 6),
-(30, 'Nasser',  'Ayman',      'nasser.ayman@student.edu',  '055-2030', '2000-05-20', '2019-09-01', 'Active',    5, 14);
+(1,  'Shakil',     'Hossain',      '472118102@qu.edu.sa',     '055-2001', '2000-02-11', '2019-09-01', 'Active',    1, 1),
+(2,  'Fatima',  'Saleh',      '425631523@qu.edu.sa',  '055-2002', '2001-03-22', '2020-09-01', 'Active',    1, 2),
+(3,  'Mohammed','Hussain',    '47215364@qu.edu.sa',    '055-2003', '1999-07-15', '2018-09-01', 'Graduated', 1, 1),
+(4,  'Aisha',   'Omar',       '485362154@qu.edu.sa',    '055-2004', '2002-01-09', '2021-09-01', 'Active',    1, 3),
+(5,  'Saud',    'Nasser',     '423664125@qu.edu.sa',   '055-2005', '2000-11-30', '2019-09-01', 'Active',    2, 2),
+(6,  'Maryam',  'Khalid',     '456321546@qu.edu.sa', '055-2006', '1998-05-19', '2018-09-01', 'Active',    2, 1),
+(7,  'Abdullah','Rahman',     '48795412@qu.edu.sa',    '055-2007', '1997-08-25', '2017-09-01', 'Active',    3, 1),
+(8,  'Layla',   'Faisal',     '456321456@qu.edu.sa',  '055-2008', '2001-12-14', '2020-09-01', 'Active',    3, 13),
+(9,  'Nawaf',   'Sultan',     '463214535@qu.edu.sa',  '055-2009', '2000-04-08', '2019-09-01', 'Suspended', 1, 4),
+(10, 'Hind',    'Majed',      '412546325@qu.edu.sa',    '055-2010', '2002-06-17', '2021-09-01', 'Active',    1, 2),
+(11, 'Sultan',  'Turki',      '451235478@qu.edu.sa',  '055-2011', '1999-09-09', '2018-09-01', 'Graduated', 4, 5),
+(12, 'Amal',    'Saad',       '412365423@qu.edu.sa',     '055-2012', '2001-10-21', '2020-09-01', 'Active',    4, 6),
+(13, 'Fahad',   'Nayef',      '423654125@qu.edu.sa',   '055-2013', '2000-03-03', '2019-09-01', 'Active',    4, 5),
+(14, 'Razan',   'Waleed',     '436541254@qu.edu.sa',  '055-2014', '2002-08-12', '2021-09-01', 'Active',    5, 14),
+(15, 'Bader',   'Hamad',      '445874524@qu.edu.sa',   '055-2015', '1998-12-01', '2017-09-01', 'Active',    5, 5),
+(16, 'Jawaher', 'Salem',      '465425834@qu.edu.sa', '055-2016', '2001-05-27', '2020-09-01', 'Active',    6, 7),
+(17, 'Mansour', 'Ibrahim',    '475863254@qu.edu.sa',     '055-2017', '2000-07-04', '2019-09-01', 'Active',    6, 8),
+(18, 'Ghada',   'Yousef',     '446354125@qu.edu.sa',  '055-2018', '2002-11-16', '2021-09-01', 'Active',    6, 7),
+(19, 'Rakan',   'Fahad',      '465235415@qu.edu.sa',   '055-2019', '1999-01-23', '2018-09-01', 'Withdrawn', 6, 15),
+(20, 'Shahad',  'Nawaf',      '425413546@qu.edu.sa',  '055-2020', '2001-09-05', '2020-09-01', 'Active',    7, 9),
+(21, 'Talal',   'Hamza',      '445687452@qu.edu.sa',   '055-2021', '2000-06-30', '2019-09-01', 'Active',    7, 10),
+(22, 'Wafa',    'Adel',       '489657243@qu.edu.sa',     '055-2022', '1998-02-18', '2018-09-01', 'Active',    7, 9),
+(23, 'Ziyad',   'Mazen',      '469874536@qu.edu.sa',   '055-2023', '2001-04-11', '2020-09-01', 'Active',    8, 11),
+(24, 'Asma',    'Rashed',     '425413658@qu.edu.sa',   '055-2024', '1997-10-07', '2017-09-01', 'Active',    8, 12),
+(25, 'Saeed',   'Nabil',      '442548796@qu.edu.sa',   '055-2025', '2000-12-25', '2019-09-01', 'Active',    8, 11),
+(26, 'Lama',    'Fouad',      '415789635@qu.edu.sa',    '055-2026', '2002-03-14', '2021-09-01', 'Active',    1, 4),
+(27, 'Yara',    'Tariq',      '475236452@qu.edu.sa',    '055-2027', '2001-08-08', '2020-09-01', 'Active',    2, 3),
+(28, 'Othman',  'Jamil',      '475863265@qu.edu.sa',  '055-2028', '1999-11-19', '2018-09-01', 'Active',    3, 13),
+(29, 'Dalal',   'Khaled',     '425635412@qu.edu.sa',  '055-2029', '2002-01-02', '2021-09-01', 'Active',    4, 6),
+(30, 'Nasser',  'Ayman',      '445698753@qu.edu.sa',  '055-2030', '2000-05-20', '2019-09-01', 'Active',    5, 14);
 
--- =========================================================
--- 5. RESEARCH PROJECTS (15)
--- =========================================================
+
 INSERT INTO ResearchProject
 (project_id, project_title, start_date, end_date, status, department_id, lead_faculty_id) VALUES
 (1,  'AI for Healthcare Diagnostics',          '2022-01-15', '2025-01-14', 'Active',    1, 1),
@@ -133,9 +95,7 @@ INSERT INTO ResearchProject
 (14, 'Autonomous Vehicle Navigation',           '2021-04-01', '2024-03-31', 'Active',    3, 15),
 (15, 'Astrophysics Data Mining',                '2023-06-01', NULL,         'Proposed',  5, 11);
 
--- =========================================================
--- 6. FACULTY–PROJECT SUPERVISION (M:N with attributes)
--- =========================================================
+
 INSERT INTO FacultyProject (faculty_id, project_id, supervision_role, start_date) VALUES
 (1,  1,  'Principal Investigator', '2022-01-15'),
 (2,  1,  'Co-Investigator',        '2022-01-15'),
@@ -167,10 +127,7 @@ INSERT INTO FacultyProject (faculty_id, project_id, supervision_role, start_date
 (7,  14, 'Co-Investigator',        '2021-04-01'),
 (11, 15, 'Principal Investigator', '2023-06-01');
 
--- =========================================================
--- 7. STUDENT–PROJECT PARTICIPATION (M:N with attributes)
--- contribution_percentage per project kept <= 100 via trigger (Task 7)
--- =========================================================
+
 INSERT INTO StudentProject
 (student_id, project_id, project_role, contribution_percentage, join_date) VALUES
 (1,  1,  'Lead Student', 40.00, '2022-01-20'),
@@ -198,16 +155,13 @@ INSERT INTO StudentProject
 (28, 14, 'Lead Student', 50.00, '2021-04-10'),
 (29, 14, 'Researcher',   50.00, '2021-05-01'),
 (30, 15, 'Lead Student', 100.00,'2023-06-10'),
--- Students in multiple projects (required for query #6)
 (1,  2,  'Researcher',   10.00, '2021-08-01'),
 (5,  1,  'Researcher',   10.00, '2022-06-01'),
 (7,  1,  'Assistant',    10.00, '2022-07-01'),
 (11, 5,  'Researcher',   10.00, '2022-09-01'),
 (16, 7,  'Researcher',   20.00, '2022-09-01');
 
--- =========================================================
--- 8. FUNDING SOURCES (8)
--- =========================================================
+
 INSERT INTO FundingSource (source_id, source_name, source_type, contact_email, country) VALUES
 (1, 'Ministry of Higher Education',  'Government',    'grants@mhe.gov',         'Saudi Arabia'),
 (2, 'National Science Foundation',   'Government',    'info@nsf.gov',           'USA'),
@@ -218,9 +172,7 @@ INSERT INTO FundingSource (source_id, source_name, source_type, contact_email, c
 (7, 'Saudi Aramco Research',         'Industry',      'research@aramco.com',    'Saudi Arabia'),
 (8, 'UNESCO Research Fund',          'International', 'research@unesco.org',    'France');
 
--- =========================================================
--- 9. FUNDING (project funding records)
--- =========================================================
+
 INSERT INTO Funding (funding_id, project_id, source_id, funding_amount, funding_date) VALUES
 (1,  1,  1, 500000.00, '2022-01-10'),
 (2,  1,  3, 250000.00, '2022-03-15'),
@@ -240,9 +192,7 @@ INSERT INTO Funding (funding_id, project_id, source_id, funding_amount, funding_
 (16, 12, 1, 100000.00, '2023-01-05'),
 (17, 15, 2,  75000.00, '2023-05-25');
 
--- =========================================================
--- 10. PUBLICATIONS (25)
--- =========================================================
+
 INSERT INTO Publication (publication_id, title, publication_type, publication_year, doi, journal_name) VALUES
 (1,  'Deep Learning for Medical Image Analysis',        'Journal',      2023, '10.1000/pub001', 'IEEE Transactions on Medical Imaging'),
 (2,  'IoT Security Challenges and Solutions',           'Journal',      2022, '10.1000/pub002', 'Journal of Cybersecurity'),
@@ -270,9 +220,7 @@ INSERT INTO Publication (publication_id, title, publication_type, publication_ye
 (24, 'Graph Neural Networks for Chemistry',             'Journal',      2023, '10.1000/pub024', 'Chemical Informatics'),
 (25, 'Fault-Tolerant Distributed Systems',              'Conference',   2022, '10.1000/pub025', NULL);
 
--- =========================================================
--- 11. PUBLICATION AUTHORS (author_order + is_corresponding)
--- =========================================================
+
 INSERT INTO PublicationAuthor (publication_id, faculty_id, author_order, is_corresponding) VALUES
 (1,  1, 1, TRUE),  (1, 2, 2, FALSE), (1, 3, 3, FALSE),
 (2,  2, 1, TRUE),  (2, 4, 2, FALSE),
@@ -300,9 +248,7 @@ INSERT INTO PublicationAuthor (publication_id, faculty_id, author_order, is_corr
 (24, 8, 1, TRUE),  (24, 7, 2, FALSE),
 (25, 12, 1, TRUE), (25, 11, 2, FALSE), (25, 10, 3, FALSE);
 
--- =========================================================
--- 12. CONFERENCES (8)
--- =========================================================
+
 INSERT INTO Conference (conference_id, conference_name, location, conference_date, submission_deadline) VALUES
 (1, 'IEEE International Conference on AI',        'Riyadh, Saudi Arabia', '2023-12-15', '2023-09-01'),
 (2, 'ACM SIGCOMM',                                'New York, USA',        '2023-08-20', '2023-04-15'),
@@ -313,9 +259,7 @@ INSERT INTO Conference (conference_id, conference_name, location, conference_dat
 (7, 'World Quantum Computing Summit',             'Geneva, Switzerland',  '2023-07-18', '2023-03-15'),
 (8, 'International Data Mining Conference',       'Paris, France',        '2023-05-22', '2023-01-20');
 
--- =========================================================
--- 13. SUBMISSIONS (20)
--- =========================================================
+
 INSERT INTO Submission (submission_id, publication_id, conference_id, submission_date, decision, decision_date) VALUES
 (1,  5,  2, '2023-04-10', 'Accepted', '2023-06-15'),
 (2,  11, 7, '2023-03-10', 'Accepted', '2023-05-20'),
@@ -338,9 +282,7 @@ INSERT INTO Submission (submission_id, publication_id, conference_id, submission
 (19, 10, 7, '2023-03-20', 'Accepted', '2023-05-25'),
 (20, 3,  3, '2023-06-25', 'Accepted', '2023-08-20');
 
--- =========================================================
--- 14. REVIEWS (30) - mix of internal faculty and external reviewers
--- =========================================================
+
 INSERT INTO Review (review_id, submission_id, reviewer_faculty_id, reviewer_name, review_score, review_comments, review_date) VALUES
 (1,  1,  1,    NULL,              8.5, 'Strong contribution, well written.',           '2023-05-01'),
 (2,  1,  3,    NULL,              7.5, 'Good but needs more experiments.',             '2023-05-02'),
@@ -373,9 +315,7 @@ INSERT INTO Review (review_id, submission_id, reviewer_faculty_id, reviewer_name
 (29, 16, 13,   NULL,              6.0, 'Needs revision.',                              '2023-09-10'),
 (30, 17, 9,    NULL,              9.0, 'Excellent.',                                   '2023-02-15');
 
--- =========================================================
--- 15. REVISIONS (20)
--- =========================================================
+
 INSERT INTO Revision (revision_id, submission_id, revision_number, revision_date, revision_notes) VALUES
 (1,  5,  1, '2023-07-15', 'Added more experimental results.'),
 (2,  5,  2, '2023-08-10', 'Improved clarity and fixed typos.'),
@@ -398,9 +338,7 @@ INSERT INTO Revision (revision_id, submission_id, revision_number, revision_date
 (19, 18, 1, '2023-02-28', 'Improved conclusion.'),
 (20, 20, 1, '2023-07-01', 'Added limitations section.');
 
--- =========================================================
--- 16. EQUIPMENT (10)
--- =========================================================
+
 INSERT INTO Equipment (equipment_id, equipment_name, serial_number, purchase_date, condition_status, department_id) VALUES
 (1,  'GPU Server NVIDIA A100',      'SN-GPU-001', '2022-01-10', 'Good',           1),
 (2,  'High-Performance Cluster',    'SN-HPC-002', '2021-06-15', 'Good',           1),
@@ -413,9 +351,7 @@ INSERT INTO Equipment (equipment_id, equipment_name, serial_number, purchase_dat
 (9,  'Particle Detector',           'SN-PAR-009', '2020-12-12', 'Poor',           5),
 (10, 'Spectrometer',                'SN-SPE-010', '2022-07-07', 'Good',           5);
 
--- =========================================================
--- 17. EQUIPMENT USAGE (M:N with usage attributes)
--- =========================================================
+
 INSERT INTO EquipmentUsage (equipment_id, project_id, usage_date, usage_purpose) VALUES
 (1,  1,  '2022-02-01', 'Training deep learning models'),
 (1,  1,  '2022-05-10', 'Model evaluation'),
@@ -438,9 +374,7 @@ INSERT INTO EquipmentUsage (equipment_id, project_id, usage_date, usage_purpose)
 (5,  14, '2021-05-01', 'Autonomous vehicle parts'),
 (7,  5,  '2022-06-01', 'Network optimization modeling');
 
--- =========================================================
--- VERIFICATION QUERIES
--- =========================================================
+
 SELECT 'Departments'        AS table_name, COUNT(*) AS row_count FROM Department
 UNION ALL SELECT 'Programs',          COUNT(*) FROM Program
 UNION ALL SELECT 'Students',          COUNT(*) FROM Student
