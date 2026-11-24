@@ -85,7 +85,6 @@ ORDER BY num_authors DESC;
 
 
 
--- Example: faculty_id = 1
 SELECT p.publication_id,
        p.title,
        p.publication_year,
@@ -110,7 +109,6 @@ ORDER BY num_submissions DESC;
 
 
 
--- Example: decision = 'Accepted'
 SELECT s.submission_id,
        p.title,
        c.conference_name,
@@ -151,7 +149,6 @@ ORDER BY f.faculty_id;
 
 
 
--- Example: equipment_id = 1 (GPU Server)
 SELECT DISTINCT rp.project_id,
        rp.project_title,
        e.equipment_name
@@ -182,7 +179,6 @@ ORDER BY f.faculty_id;
 
 
 
--- Method A: correlated subquery
 SELECT rp.project_id,
        rp.project_title,
        (SELECT SUM(f.funding_amount)
@@ -198,7 +194,6 @@ WHERE (SELECT SUM(f.funding_amount)
                  GROUP BY project_id) AS totals
        );
 
--- Method B: ORDER BY + LIMIT (simpler, MySQL)
 SELECT rp.project_id,
        rp.project_title,
        SUM(f.funding_amount) AS total_funding
