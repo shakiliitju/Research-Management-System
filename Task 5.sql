@@ -1,9 +1,4 @@
--- =========================================================
--- Task 5: Database Views
--- Run after Task 3 (data loaded)
--- =========================================================
 
--- ---------- View 1 ----------
 CREATE OR REPLACE VIEW vw_StudentResearchProfile AS
 SELECT
     s.student_id,
@@ -29,7 +24,6 @@ GROUP BY s.student_id, s.first_name, s.last_name, s.email,
          p.program_name, p.degree_level, d.department_name,
          f.first_name, f.last_name, f.title;
 
--- ---------- View 2 ----------
 CREATE OR REPLACE VIEW vw_FacultyResearchProfile AS
 SELECT
     f.faculty_id,
@@ -55,7 +49,6 @@ FROM Faculty f
 JOIN Department d   ON f.department_id = d.department_id
 LEFT JOIN Faculty m ON f.mentor_id = m.faculty_id;
 
--- ---------- View 3 ----------
 CREATE OR REPLACE VIEW vw_ProjectFundingSummary AS
 SELECT
     rp.project_id,
@@ -75,7 +68,6 @@ LEFT JOIN Funding fu       ON rp.project_id = fu.project_id
 GROUP BY rp.project_id, rp.project_title, rp.status,
          d.department_name, f.first_name, f.last_name;
 
--- ---------- View 4 ----------
 CREATE OR REPLACE VIEW vw_PublicationAuthorSummary AS
 SELECT
     p.publication_id,
@@ -98,7 +90,6 @@ JOIN Faculty f            ON pa.faculty_id = f.faculty_id
 GROUP BY p.publication_id, p.title, p.publication_type,
          p.publication_year, p.journal_name;
 
--- ---------- View 5 ----------
 CREATE OR REPLACE VIEW vw_StudentOwnProfile AS
 SELECT
     s.student_id,
@@ -118,7 +109,6 @@ WHERE s.student_id = CAST(
         SUBSTRING_INDEX(CURRENT_USER(), 'stu_', -1) AS UNSIGNED
       );
 
--- ---------- View 6 ----------
 CREATE OR REPLACE VIEW vw_FacultyOwnProfile AS
 SELECT
     f.faculty_id,
@@ -140,7 +130,6 @@ WHERE f.faculty_id = CAST(
         SUBSTRING_INDEX(CURRENT_USER(), 'fac_', -1) AS UNSIGNED
       );
 
--- ---------- View 7 ----------
 CREATE OR REPLACE VIEW vw_ConferenceSubmissionStatus AS
 SELECT
     c.conference_id,
@@ -160,11 +149,9 @@ FROM Conference c
 LEFT JOIN Submission s ON c.conference_id = s.conference_id
 GROUP BY c.conference_id, c.conference_name, c.location, c.conference_date;
 
--- ---------- Verification ----------
 SELECT 'Views created' AS status;
 SHOW FULL TABLES WHERE Table_type = 'VIEW';
 
--- Sample outputs
 SELECT * FROM vw_ProjectFundingSummary ORDER BY total_funding DESC LIMIT 5;
 SELECT * FROM vw_ConferenceSubmissionStatus ORDER BY total_submissions DESC;
 SELECT * FROM vw_PublicationAuthorSummary ORDER BY num_authors DESC LIMIT 5;
